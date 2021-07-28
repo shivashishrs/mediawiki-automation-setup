@@ -81,13 +81,13 @@ resource "aws_s3_bucket" "source_code" {
 
 data "archive_file" "ansible" {
   type        = "zip"
-  source_dir = "../../ansible/"
+  source_dir  = "../../ansible/"
   output_path = "ansible.zip"
 }
 
 resource "aws_s3_bucket_object" "ansible_code_upload" {
   bucket = aws_s3_bucket.source_code.bucket
-  key = "ansible.zip"
+  key    = "ansible.zip"
   source = data.archive_file.ansible.output_path
-  etag = filemd5(data.archive_file.ansible.output_path)
+  etag   = filemd5(data.archive_file.ansible.output_path)
 }

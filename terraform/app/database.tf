@@ -5,41 +5,41 @@ module "db" {
   env                  = var.env
   db_security_group_id = aws_security_group.db.id
   db_subnet_ids        = module.vpc.private_subnets
-  db_password = random_password.db_pass.result
-  db_name = "${ var.app_name }db"
+  db_password          = random_password.db_pass.result
+  db_name              = "${var.app_name}db"
 }
 
 resource "random_password" "db_pass" {
-  length            = 20
-  special           = true
-  min_special       = 5
-  override_special  = "!#$%^&*()-_=+[]{}<>:?"
-  keepers           = {
-    pass_version  = 1
+  length           = 20
+  special          = true
+  min_special      = 5
+  override_special = "!#$%^&*()-_=+[]{}<>:?"
+  keepers = {
+    pass_version = 1
   }
 }
 
 resource "aws_ssm_parameter" "db_pass" {
-  name = "/mediawiki/${ var.env }/db/password"
-  type = "SecureString"
+  name  = "/mediawiki/${var.env}/db/password"
+  type  = "SecureString"
   value = random_password.db_pass.result
 }
 
 resource "aws_ssm_parameter" "db_username" {
-  name = "/mediawiki/${ var.env }/db/username"
-  type = "String"
+  name  = "/mediawiki/${var.env}/db/username"
+  type  = "String"
   value = var.app_name
 }
 
 resource "aws_ssm_parameter" "db_name" {
-  name = "/mediawiki/${ var.env }/db/dbname"
-  type = "String"
+  name  = "/mediawiki/${var.env}/db/dbname"
+  type  = "String"
   value = var.app_name
 }
 
 resource "aws_ssm_parameter" "db_host" {
-  name = "/mediawiki/${ var.env }/db/dbhost"
-  type = "SecureString"
+  name  = "/mediawiki/${var.env}/db/dbhost"
+  type  = "SecureString"
   value = module.db.db_endpoint
 }
 

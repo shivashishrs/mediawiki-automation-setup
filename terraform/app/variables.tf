@@ -20,25 +20,25 @@ variable "codepipeline_source_s3_bucket" {
 
 variable "ssh_user" {
   description = "Default ssh user"
-  default = "ec2-user"
+  default     = "ec2-user"
 }
 
 variable "key_path" {
   description = "Key path of private file to connect to server"
-  default = "~/.ssh/mediwikikey"
+  default     = "~/.ssh/mediwikikey.pem"
 }
 
 variable "ami" {
   description = "AMI id to use in EC2 instance"
-  default = "ami-0e75020b7da68d0d4"
+  default     = "ami-0e75020b7da68d0d4"
 }
 
 variable "admin_username" {
   description = "Admin username for the mediawiki site"
-  default = "Admin"
+  default     = "Admin"
 }
 
 variable "admin_password" {
   description = "Admin password for the mediawiki site"
-  default = "Mediawiki@12345"
+  default     = "Mediawiki@12345"
 }

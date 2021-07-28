@@ -36,7 +36,7 @@ resource "aws_lb_target_group" "app" {
 }
 
 resource "aws_ssm_parameter" "alb_host" {
-  name = "/mediawiki/${ var.env }/alb/host"
-  type = "SecureString"
+  name  = "/mediawiki/${var.env}/alb/host"
+  type  = "SecureString"
   value = module.alb.alb_url
 }
