@@ -53,6 +53,8 @@ Whenever the scaling event will happen the code pipeline will automatically get 
 
 **Parameter Store** Securely stores the database and other credentials.
 
+**S3** To store the source code and provide to codepipeline
+
 This Terraform script will also provision the jumpbox server to be able to connect and troubleshoot the instance
 
 **NOTE** Terraform will use the local state. If you want to use the remote state s3 or any other just add the remote state config in main.tf file. 
