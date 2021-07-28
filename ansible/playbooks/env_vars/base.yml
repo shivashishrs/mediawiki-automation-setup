@@ -1,0 +1,4 @@
+application_name: mediawiki
+mediawiki_version: "1.36.1"
+ansible_ec2_placement_region: "us-east-1"
+mediawiki_src_url: "https://releases.wikimedia.org/mediawiki/1.36/mediawiki-1.36.1.tar.gz"

@@ -1,0 +1,24 @@
+---
+- name: Download current version of MediaWiki
+  ansible.builtin.unarchive:
+    src: "{{ mediawiki_src_url }}"
+    dest: /var/www
+    group: apache
+    owner: apache
+    remote_src: yes
+
+- name: Configure LocalSettings.php file
+  template:
+    src: localsettings.j2
+    dest: /var/www/mediawiki-{{ mediawiki_version }}/LocalSettings.php
+    backup: yes
+  vars:
+    - db_user: "{{ lookup('aws_ssm', '/mediawiki/demo/db/username', region='us-east-1' ) }}"
+    - db_password: "{{ lookup('aws_ssm', '/mediawiki/demo/db/password', region='us-east-1'  ) }}"
+    - db_name: "{{ lookup('aws_ssm', '/mediawiki/demo/db/dbname', region='us-east-1' ) }}"
+    - db_host: "{{ lookup('aws_ssm', '/mediawiki/demo/db/dbhost', region='us-east-1' ) }}"
+    - site_url: "{{ lookup('aws_ssm', '/mediawiki/demo/alb/host', region='us-east-1' ) }}"
+    - db_type: "mysql"
+  when: is_codedeploy is defined
+
+

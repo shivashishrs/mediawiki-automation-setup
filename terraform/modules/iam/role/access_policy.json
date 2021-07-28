@@ -1,0 +1,19 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "0",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogStream",
+        "ssm:DescribeParameters",
+        "logs:DescribeLogStreams",
+        "ecr:*",
+        "logs:CreateLogGroup",
+        "logs:PutLogEvents",
+        "ssm:*"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

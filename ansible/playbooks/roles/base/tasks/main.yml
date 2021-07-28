@@ -1,0 +1,72 @@
+---
+
+- name: Disable SELinux to connect with remote db
+  shell: setsebool -P httpd_can_network_connect=1
+
+- name: Reset the current php module
+  shell: dnf module reset -y php
+
+- name: Enable php7.4 module
+  shell: dnf module enable -y php:7.4
+
+- name: Install the latest version of Apache, python and some php modules
+  dnf:
+    name: "{{ packages }}"
+    state: latest
+
+- name: Import RPM GPG key.
+  rpm_key:
+    key: https://rpms.remirepo.net/RPM-GPG-KEY-remi2018
+    state: present
+
+- name: Import EPEL GPG key.
+  rpm_key:
+    key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8
+    state: present
+
+- name: Install EPEL repo.
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    state: present
+
+- name: Install remi repo.
+  yum:
+    name: http://rpms.famillecollet.com/enterprise/remi-release-8.rpm
+    state: present
+
+- name: Install the php-intl extention that is require by mediawiki
+  yum:
+    name: php-intl
+    enablerepo: remi
+    state: present
+
+- name: Install boto libraries
+  pip:
+    name: boto3
+    executable: pip3
+
+- name: "Get CodeDeploy | s3"
+  get_url:
+    url: "https://aws-codedeploy-{{ ansible_ec2_placement_region }}.s3.amazonaws.com/latest/install"
+    dest: /tmp/codedeploy-install
+  when: is_packer is defined
+  tags:
+    - codedeploy
+
+- name: "Codedeploy Install Binary | Permission Executable"
+  file:
+    state: file
+    path: /tmp/codedeploy-install
+    group: root
+    owner: root
+    mode: 0755
+  when: is_packer is defined
+  tags:
+    - codedeploy
+
+- name: "Codedeploy Install"
+  become: true
+  command: /tmp/codedeploy-install auto
+  when: is_packer is defined
+  tags:
+    - codedeploy

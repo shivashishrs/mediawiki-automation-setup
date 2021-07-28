@@ -1,0 +1,11 @@
+---
+- name: Copy the httpd config file
+  copy: src=mediawiki.conf dest=/etc/httpd/conf.d/
+  notify: restart httpd service
+
+- name: restart httpd service
+  systemd:
+    name: httpd
+    state: started
+    enabled: yes
+    daemon-reload: yes

@@ -1,0 +1,22 @@
+{
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "region": "us-east-1",
+      "source_ami": "ami-0b0af3577fe5e3532",
+      "instance_type": "t3.small",
+      "ssh_username": "ec2-user",
+      "ami_name": "mediawiki-{{ timestamp }}",
+      "tags": {
+        "Name" : "mediawiki-ami"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "ansible",
+      "playbook_file": "./ansible/playbooks/webserver.yml",
+      "extra_arguments": ["--extra-vars", "is_packer=True"]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+---
+packages:
+  - httpd
+  - php
+  - php-mysqlnd
+  - php-gd
+  - php-xml
+  - php-mbstring
+  - php-json
+  - python3-pip
+  - ruby
+  - git
